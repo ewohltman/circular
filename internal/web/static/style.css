@@ -10,8 +10,11 @@
   --save-bg: #e5f2ea;
   --warn-bg: #fff3d6;
 }
+/* Dark tokens apply when the system prefers dark and the user hasn't picked
+   light, or when the user picked dark (data-theme is set by theme.js). */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
     --bg: #15171a;
     --card: #1e2125;
     --ink: #e8e6e1;
@@ -24,6 +27,20 @@
     --warn-bg: #3d3216;
   }
 }
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #15171a;
+  --card: #1e2125;
+  --ink: #e8e6e1;
+  --muted: #9aa0a6;
+  --line: #2e3237;
+  --accent: #7cc69c;
+  --shoprite: #ff6b7f;
+  --costco: #6aaeff;
+  --save-bg: #1f3a2b;
+  --warn-bg: #3d3216;
+}
+:root[data-theme="light"] { color-scheme: light; }
 * { box-sizing: border-box; }
 body {
   margin: 0;
@@ -51,6 +68,21 @@ button {
   padding: 10px 16px; font: inherit; font-weight: 600; cursor: pointer;
 }
 button:disabled { opacity: 0.6; }
+.actions { display: flex; align-items: center; gap: 8px; }
+.theme-toggle {
+  display: inline-grid; place-items: center; width: 42px; height: 42px; padding: 0;
+  background: transparent; color: var(--ink); border: 1px solid var(--line);
+}
+.theme-toggle[hidden] { display: none; }
+.theme-toggle:hover { border-color: var(--muted); }
+.theme-toggle svg {
+  width: 20px; height: 20px; fill: none; stroke: currentColor;
+  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+}
+/* Show the icon for the mode a click switches to. */
+.theme-toggle .icon-sun { display: none; }
+.theme-toggle[aria-pressed="true"] .icon-sun { display: block; }
+.theme-toggle[aria-pressed="true"] .icon-moon { display: none; }
 .meals { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
 .meal {
   display: grid; grid-template-columns: 96px 1fr; gap: 16px;

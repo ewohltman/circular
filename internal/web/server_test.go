@@ -79,6 +79,29 @@ func TestRefreshRejectsCrossOrigin(t *testing.T) {
 	}
 }
 
+func TestThemeToggle(t *testing.T) {
+	st, err := store.Open(filepath.Join(t.TempDir(), "snap.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	srv := &Server{Store: st}
+	if err := srv.Init(); err != nil {
+		t.Fatal(err)
+	}
+	ts := httptest.NewServer(srv.Handler())
+	defer ts.Close()
+
+	body := get(t, ts.URL+"/")
+	for _, want := range []string{`id="theme-toggle"`, `src="/static/theme.js"`} {
+		if !strings.Contains(body, want) {
+			t.Errorf("page missing %q", want)
+		}
+	}
+	if !strings.Contains(get(t, ts.URL+"/static/theme.js"), "localStorage") {
+		t.Errorf("theme.js not served")
+	}
+}
+
 func get(t *testing.T, url string) string {
 	t.Helper()
 	resp, err := http.Get(url)
