@@ -1,0 +1,140 @@
+[
+  {
+    "id": "sheet-pan-chicken", "name": "Sheet-pan chicken thighs with potatoes and broccoli",
+    "protein": "chicken", "minutes": 45, "servings": 4,
+    "ingredients": [
+      {"name": "chicken thighs", "match": ["chicken thigh"], "main": true},
+      {"name": "potatoes", "match": ["potato"], "exclude": ["chip", "sweet"]},
+      {"name": "broccoli", "match": ["broccoli"]},
+      {"name": "olive oil", "match": ["olive oil"]}
+    ]
+  },
+  {
+    "id": "chicken-stir-fry", "name": "Chicken and vegetable stir-fry with rice",
+    "protein": "chicken", "minutes": 30, "servings": 4,
+    "ingredients": [
+      {"name": "chicken breast", "match": ["chicken breast"], "exclude": ["breaded", "nugget"], "main": true},
+      {"name": "bell peppers", "match": ["pepper"], "exclude": ["black pepper", "pepperoni", "dr pepper", "dr. pepper"]},
+      {"name": "rice", "match": ["rice"], "exclude": ["krispies", "cake", "cereal"]},
+      {"name": "soy sauce", "match": ["soy sauce"]}
+    ]
+  },
+  {
+    "id": "spaghetti-meat-sauce", "name": "Spaghetti with meat sauce",
+    "protein": "beef", "minutes": 35, "servings": 6,
+    "ingredients": [
+      {"name": "ground beef", "match": ["ground beef", "ground chuck"], "main": true},
+      {"name": "pasta", "match": ["pasta", "spaghetti"], "exclude": ["sauce"]},
+      {"name": "pasta sauce", "match": ["pasta sauce", "marinara"]},
+      {"name": "parmesan", "match": ["parmesan"]}
+    ]
+  },
+  {
+    "id": "beef-tacos", "name": "Ground beef tacos",
+    "protein": "beef", "minutes": 25, "servings": 4,
+    "ingredients": [
+      {"name": "ground beef", "match": ["ground beef", "ground chuck"], "main": true},
+      {"name": "taco shells or tortillas", "match": ["tortilla", "taco shell"], "exclude": ["chip"]},
+      {"name": "shredded cheese", "match": ["shredded cheese", "cheddar"]},
+      {"name": "lettuce", "match": ["lettuce"]},
+      {"name": "salsa", "match": ["salsa"]}
+    ]
+  },
+  {
+    "id": "steak-night", "name": "Seared steak with roasted asparagus",
+    "protein": "beef", "minutes": 30, "servings": 2,
+    "ingredients": [
+      {"name": "steak", "match": ["steak", "ribeye", "sirloin", "strip"], "exclude": ["sauce", "seasoning", "salmon", "tuna"], "main": true},
+      {"name": "asparagus", "match": ["asparagus"]},
+      {"name": "butter", "match": ["butter"], "exclude": ["peanut butter", "butternut"]}
+    ]
+  },
+  {
+    "id": "pork-chops-apples", "name": "Pork chops with apples and green beans",
+    "protein": "pork", "minutes": 35, "servings": 4,
+    "ingredients": [
+      {"name": "pork chops", "match": ["pork chop"], "main": true},
+      {"name": "apples", "match": ["apple"], "exclude": ["juice", "sauce", "cider", "pie"]},
+      {"name": "green beans", "match": ["green bean"]}
+    ]
+  },
+  {
+    "id": "sausage-peppers", "name": "Italian sausage and peppers",
+    "protein": "pork", "minutes": 30, "servings": 4,
+    "ingredients": [
+      {"name": "Italian sausage", "match": ["italian sausage", "sausage"], "exclude": ["breakfast", "turkey"], "main": true},
+      {"name": "bell peppers", "match": ["pepper"], "exclude": ["black pepper", "pepperoni", "dr pepper", "dr. pepper"]},
+      {"name": "onions", "match": ["onion"], "exclude": ["ring", "soup"]},
+      {"name": "rolls", "match": ["rolls", "hoagie"], "exclude": ["egg roll", "toilet", "paper towel"]}
+    ]
+  },
+  {
+    "id": "baked-salmon", "name": "Lemon garlic baked salmon with rice",
+    "protein": "fish", "minutes": 25, "servings": 4,
+    "ingredients": [
+      {"name": "salmon fillets", "match": ["salmon"], "exclude": ["canned", "smoked"], "main": true},
+      {"name": "lemons", "match": ["lemon"], "exclude": ["lemonade", "juice"]},
+      {"name": "rice", "match": ["rice"], "exclude": ["krispies", "cake", "cereal"]},
+      {"name": "spinach", "match": ["spinach"]}
+    ]
+  },
+  {
+    "id": "shrimp-scampi", "name": "Shrimp scampi linguine",
+    "protein": "fish", "minutes": 25, "servings": 4,
+    "ingredients": [
+      {"name": "shrimp", "match": ["shrimp"], "exclude": ["ring", "cocktail sauce"], "main": true},
+      {"name": "linguine", "match": ["linguine", "pasta"], "exclude": ["sauce"]},
+      {"name": "butter", "match": ["butter"], "exclude": ["peanut butter", "butternut"]},
+      {"name": "lemons", "match": ["lemon"], "exclude": ["lemonade", "juice"]}
+    ]
+  },
+  {
+    "id": "turkey-chili", "name": "Turkey and bean chili",
+    "protein": "turkey", "minutes": 50, "servings": 6,
+    "ingredients": [
+      {"name": "ground turkey", "match": ["ground turkey"], "main": true},
+      {"name": "beans", "match": ["beans"], "exclude": ["green bean", "coffee", "jelly"]},
+      {"name": "diced tomatoes", "match": ["tomatoes"], "exclude": ["grape", "cherry"]},
+      {"name": "onions", "match": ["onion"], "exclude": ["ring", "soup"]}
+    ]
+  },
+  {
+    "id": "veggie-frittata", "name": "Vegetable frittata with salad",
+    "protein": "vegetarian", "minutes": 30, "servings": 4,
+    "ingredients": [
+      {"name": "eggs", "match": ["eggs"], "exclude": ["egg roll", "eggplant"], "main": true},
+      {"name": "spinach", "match": ["spinach"]},
+      {"name": "mushrooms", "match": ["mushroom"], "exclude": ["soup"]},
+      {"name": "salad greens", "match": ["salad", "lettuce"], "exclude": ["dressing", "chicken salad", "tuna salad"]}
+    ]
+  },
+  {
+    "id": "black-bean-quesadillas", "name": "Black bean and cheese quesadillas",
+    "protein": "vegetarian", "minutes": 20, "servings": 4,
+    "ingredients": [
+      {"name": "tortillas", "match": ["tortilla"], "exclude": ["chip"], "main": true},
+      {"name": "black beans", "match": ["black bean", "beans"], "exclude": ["green bean", "coffee", "jelly"]},
+      {"name": "shredded cheese", "match": ["shredded cheese", "cheddar"]},
+      {"name": "avocados", "match": ["avocado"]}
+    ]
+  },
+  {
+    "id": "roast-chicken", "name": "Whole roast chicken with carrots",
+    "protein": "chicken", "minutes": 90, "servings": 6,
+    "ingredients": [
+      {"name": "whole chicken", "match": ["whole chicken", "roaster", "rotisserie"], "main": true},
+      {"name": "carrots", "match": ["carrot"], "exclude": ["cake"]},
+      {"name": "onions", "match": ["onion"], "exclude": ["ring", "soup"]}
+    ]
+  },
+  {
+    "id": "homemade-pizza", "name": "Homemade pizza night",
+    "protein": "vegetarian", "minutes": 40, "servings": 4,
+    "ingredients": [
+      {"name": "pizza dough", "match": ["pizza dough", "pizza crust"], "main": true},
+      {"name": "mozzarella", "match": ["mozzarella"]},
+      {"name": "pasta sauce", "match": ["pizza sauce", "pasta sauce", "marinara"]},
+      {"name": "pepperoni", "match": ["pepperoni"]}
+    ]
+  }
+]

@@ -1,0 +1,18 @@
+[
+  {"id": "sr-1", "store": "ShopRite", "name": "Perdue Fresh Boneless Skinless Chicken Breast, Family Pack", "price": 1.99, "regular_price": 4.49, "unit": "lb", "sale_story": "Save $2.50/lb", "valid_from": "2026-10-23T00:00:00-04:00", "valid_to": "2026-10-29T23:59:59-04:00"},
+  {"id": "sr-2", "store": "ShopRite", "name": "Bowl & Basket Chicken Thighs, Value Pack", "price": 1.29, "regular_price": 2.49, "unit": "lb", "valid_from": "2026-10-23T00:00:00-04:00", "valid_to": "2026-10-29T23:59:59-04:00"},
+  {"id": "sr-3", "store": "ShopRite", "name": "80% Lean Ground Beef, Family Pack", "price": 3.99, "regular_price": 5.49, "unit": "lb", "valid_from": "2026-10-23T00:00:00-04:00", "valid_to": "2026-10-29T23:59:59-04:00"},
+  {"id": "sr-4", "store": "ShopRite", "name": "Barilla Pasta, 16 oz", "price": 0.99, "regular_price": 2.29, "unit": "ea", "sale_story": "Must buy 4", "valid_from": "2026-10-23T00:00:00-04:00", "valid_to": "2026-10-29T23:59:59-04:00"},
+  {"id": "sr-5", "store": "ShopRite", "name": "Rao's Homemade Marinara Sauce, 24 oz", "price": 5.99, "regular_price": 8.99, "unit": "ea", "valid_from": "2026-10-23T00:00:00-04:00", "valid_to": "2026-10-29T23:59:59-04:00"},
+  {"id": "sr-6", "store": "ShopRite", "name": "Fresh Broccoli Crowns", "price": 1.49, "regular_price": 2.49, "unit": "lb", "valid_from": "2026-10-23T00:00:00-04:00", "valid_to": "2026-10-29T23:59:59-04:00"},
+  {"id": "sr-7", "store": "ShopRite", "name": "Honeycrisp Apples", "price": 1.99, "unit": "lb", "valid_from": "2026-10-23T00:00:00-04:00", "valid_to": "2026-10-29T23:59:59-04:00"},
+  {"id": "sr-8", "store": "ShopRite", "name": "Bowl & Basket Shredded Cheese, 8 oz", "price": 2.00, "regular_price": 3.49, "unit": "ea", "valid_from": "2026-10-23T00:00:00-04:00", "valid_to": "2026-10-29T23:59:59-04:00"},
+  {"id": "sr-9", "store": "ShopRite", "name": "Mission Flour Tortillas", "price": 2.50, "regular_price": 3.99, "unit": "ea", "valid_from": "2026-10-23T00:00:00-04:00", "valid_to": "2026-10-29T23:59:59-04:00"},
+  {"id": "sr-10", "store": "ShopRite", "name": "Red, Yellow or Orange Bell Peppers", "price": 1.99, "regular_price": 3.99, "unit": "lb", "valid_from": "2026-10-23T00:00:00-04:00", "valid_to": "2026-10-29T23:59:59-04:00"},
+  {"id": "sr-11", "store": "ShopRite", "name": "Hass Avocados", "price": 1.00, "regular_price": 1.99, "unit": "ea", "valid_from": "2026-10-23T00:00:00-04:00", "valid_to": "2026-10-29T23:59:59-04:00"},
+  {"id": "co-1", "store": "Costco", "name": "Kirkland Signature Wild Alaskan Sockeye Salmon, 3 lb", "price": 32.99, "regular_price": 38.99, "unit": "ea", "sale_story": "$6 OFF", "valid_from": "2026-10-08T00:00:00-04:00", "valid_to": "2026-11-02T23:59:59-05:00"},
+  {"id": "co-2", "store": "Costco", "name": "Kirkland Signature Raw Shrimp, 2 lb", "price": 15.99, "regular_price": 19.99, "unit": "ea", "sale_story": "$4 OFF", "valid_from": "2026-10-08T00:00:00-04:00", "valid_to": "2026-11-02T23:59:59-05:00"},
+  {"id": "co-3", "store": "Costco", "name": "Kirkland Signature Extra Virgin Olive Oil, 2 L", "price": 17.99, "regular_price": 22.99, "unit": "ea", "sale_story": "$5 OFF", "valid_from": "2026-10-08T00:00:00-04:00", "valid_to": "2026-11-02T23:59:59-05:00"},
+  {"id": "co-4", "store": "Costco", "name": "Kirkland Signature Cage-Free Large Eggs, 24 ct", "price": 6.49, "unit": "ea", "valid_from": "2026-10-08T00:00:00-04:00", "valid_to": "2026-11-02T23:59:59-05:00"},
+  {"id": "co-5", "store": "Costco", "name": "Kirkland Signature Parmigiano Reggiano", "price": 13.99, "regular_price": 16.99, "unit": "lb", "sale_story": "$3 OFF", "valid_from": "2026-10-08T00:00:00-04:00", "valid_to": "2026-11-02T23:59:59-05:00"}
+]

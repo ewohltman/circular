@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Circular</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header class="top">
+  <div>
+    <h1>Circular</h1>
+    {{with .Snap}}
+      <p class="sub">Week of {{date .Plan.WeekOf}} · {{len .Deals}} deals · updated {{.FetchedAt.Format "Jan 2, 3:04 PM"}}</p>
+    {{else}}
+      <p class="sub">No plan yet.</p>
+    {{end}}
+  </div>
+  <form method="post" action="/refresh" class="refresh">
+    <button type="submit">Refresh deals</button>
+  </form>
+</header>
+
+<main>
+{{with .Snap}}
+  {{range .Errors}}<p class="warn">Couldn't load {{.}}</p>{{end}}
+
+  <section>
+    <div class="section-head">
+      <h2>This week's dinners</h2>
+      {{if .Plan.Savings}}<span class="pill save">{{money .Plan.Savings}} in known savings</span>{{end}}
+    </div>
+    <ol class="meals">
+      {{range .Plan.Meals}}
+      <li class="meal">
+        <div class="day">{{.Day}}<span>{{date .Date}}</span></div>
+        <div class="body">
+          <h3>{{.Recipe.Name}}</h3>
+          <p class="meta">{{.Recipe.Minutes}} min · serves {{.Recipe.Servings}} · {{.OnSale}}/{{len .Matches}} on sale</p>
+          <ul class="ings">
+            {{range .Matches}}
+              {{if .Deal}}
+                <li class="on-sale {{storeClass .Deal.Store}}" title="{{.Deal.Name}}">{{.Ingredient.Name}} <b>{{money .Deal.Price}}{{with .Deal.Unit}}/{{.}}{{end}}</b> <em>{{.Deal.Store}}</em></li>
+              {{else}}
+                <li>{{.Ingredient.Name}}</li>
+              {{end}}
+            {{end}}
+          </ul>
+        </div>
+      </li>
+      {{end}}
+    </ol>
+  </section>
+
+  <section>
+    <h2>Shopping list</h2>
+    <div class="lists">
+      {{$plan := .Plan}}
+      {{range $.Stores}}
+        {{$items := index $plan.ByStore .}}
+        {{if $items}}
+        <div class="list">
+          <h3 class="{{storeClass .}}">{{.}}</h3>
+          <ul>
+            {{range $items}}
+            <li>
+              <label><input type="checkbox"> <span>{{.Deal.Name}}</span></label>
+              <span class="price">{{money .Deal.Price}}{{with .Deal.Unit}}/{{.}}{{end}}{{if .Deal.Savings}} <small>save {{money .Deal.Savings}}</small>{{end}}</span>
+            </li>
+            {{end}}
+          </ul>
+        </div>
+        {{end}}
+      {{end}}
+      {{if $plan.NoDeal}}
+      <div class="list">
+        <h3>Anywhere (no deal found)</h3>
+        <ul>
+          {{range $plan.NoDeal}}<li><label><input type="checkbox"> <span>{{.Name}}</span></label></li>{{end}}
+        </ul>
+      </div>
+      {{end}}
+    </div>
+  </section>
+
+  <section>
+    <details>
+      <summary>All matched deals ({{len .Deals}})</summary>
+      <table class="deals">
+        <thead><tr><th>Store</th><th>Item</th><th>Price</th><th>Deal</th><th>Valid</th></tr></thead>
+        <tbody>
+        {{range .Deals}}
+          <tr>
+            <td><span class="tag {{storeClass .Store}}">{{.Store}}</span></td>
+            <td>{{.Name}}</td>
+            <td>{{money .Price}}{{with .Unit}}/{{.}}{{end}}</td>
+            <td>{{.SaleStory}}</td>
+            <td>{{if not .ValidTo.IsZero}}thru {{date .ValidTo}}{{end}}</td>
+          </tr>
+        {{end}}
+        </tbody>
+      </table>
+    </details>
+  </section>
+{{else}}
+  <p class="empty">Press <b>Refresh deals</b> to pull this week's ShopRite and Costco deals and build a plan.</p>
+{{end}}
+</main>
+</body>
+</html>
