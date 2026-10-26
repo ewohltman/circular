@@ -2,9 +2,10 @@
 package planner
 
 import (
+	"cmp"
 	"hash/fnv"
-	"math/rand"
-	"sort"
+	"math/rand/v2"
+	"slices"
 	"time"
 
 	"github.com/ewohltman/circular/internal/deals"
@@ -91,17 +92,14 @@ func Build(rs []recipes.Recipe, ds []deals.Deal, weekOf time.Time, opt Options) 
 		meal Meal
 		jit  float64
 	}
-	rng := rand.New(rand.NewSource(seed(weekOf)))
+	rng := rand.New(rand.NewPCG(seed(weekOf), 0))
 	cands := make([]scored, 0, len(rs))
 	for _, r := range rs {
 		m := scoreRecipe(r, active)
 		cands = append(cands, scored{meal: m, jit: rng.Float64()})
 	}
-	sort.SliceStable(cands, func(i, j int) bool {
-		if cands[i].meal.Score != cands[j].meal.Score {
-			return cands[i].meal.Score > cands[j].meal.Score
-		}
-		return cands[i].jit > cands[j].jit
+	slices.SortStableFunc(cands, func(a, b scored) int {
+		return cmp.Or(cmp.Compare(b.meal.Score, a.meal.Score), cmp.Compare(b.jit, a.jit))
 	})
 
 	// Greedy pick with a cap per protein; relax the cap if the catalog is
@@ -157,8 +155,7 @@ func scoreRecipe(r recipes.Recipe, ds []deals.Deal) Meal {
 			}
 			if v > best {
 				best = v
-				d := ds[i]
-				im.Deal = &d
+				im.Deal = new(ds[i])
 			}
 		}
 		if im.Deal != nil {
@@ -176,7 +173,7 @@ func scoreRecipe(r recipes.Recipe, ds []deals.Deal) Meal {
 // interleave reorders meals so adjacent nights differ in protein when possible.
 func interleave(ms []Meal) []Meal {
 	out := make([]Meal, 0, len(ms))
-	rest := append([]Meal(nil), ms...)
+	rest := slices.Clone(ms)
 	for len(rest) > 0 {
 		idx := 0
 		if len(out) > 0 {
@@ -189,7 +186,7 @@ func interleave(ms []Meal) []Meal {
 			}
 		}
 		out = append(out, rest[idx])
-		rest = append(rest[:idx], rest[idx+1:]...)
+		rest = slices.Delete(rest, idx, idx+1)
 	}
 	return out
 }
@@ -224,10 +221,10 @@ func buildShoppingList(p *Plan) {
 	}
 }
 
-func seed(t time.Time) int64 {
+func seed(t time.Time) uint64 {
 	h := fnv.New64a()
 	h.Write([]byte(t.Format("2006-01-02")))
-	return int64(h.Sum64())
+	return h.Sum64()
 }
 
 // WeekStart returns midnight of the most recent Friday on or before t. ShopRite

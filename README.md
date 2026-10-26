@@ -5,6 +5,8 @@ a seven-night dinner plan and shopping list around them.
 
 ## Run it
 
+Requires Go 1.27 or newer.
+
 ```sh
 # Live data (needs internet access to Flipp)
 go run ./cmd/circular -zip 07052
@@ -73,4 +75,14 @@ internal/planner/    scoring, selection, shopping list
 internal/store/      JSON snapshot cache
 internal/web/        HTTP handlers, HTML template, CSS
 testdata/            sample deals for offline runs and tests
+```
+
+## Development
+
+CI (`.github/workflows/ci.yml`) runs on every push to `main` and every pull
+request. To run the same checks locally:
+
+```sh
+go build ./... && go vet ./... && go test -race ./...
+golangci-lint run   # config in .golangci.yml
 ```

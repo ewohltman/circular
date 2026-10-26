@@ -1,0 +1,21 @@
+version: "2"
+
+linters:
+  # The standard set (errcheck, govet, ineffassign, staticcheck, unused) plus
+  # a few that catch real bugs or keep the code on current idioms.
+  enable:
+    - bodyclose
+    - errorlint
+    - misspell
+    - modernize
+    - nolintlint
+    - usestdlibvars
+  exclusions:
+    presets:
+      # Unchecked Close/Flush/print calls, e.g. `defer resp.Body.Close()`.
+      - std-error-handling
+
+formatters:
+  enable:
+    - gofmt
+    - goimports

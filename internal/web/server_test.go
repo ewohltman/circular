@@ -61,6 +61,24 @@ func TestRefreshAndRender(t *testing.T) {
 	}
 }
 
+func TestRefreshRejectsCrossOrigin(t *testing.T) {
+	st, err := store.Open(filepath.Join(t.TempDir(), "snap.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	srv := &Server{Store: st}
+	if err := srv.Init(); err != nil {
+		t.Fatal(err)
+	}
+	req := httptest.NewRequest(http.MethodPost, "/refresh", nil)
+	req.Header.Set("Sec-Fetch-Site", "cross-site")
+	rec := httptest.NewRecorder()
+	srv.Handler().ServeHTTP(rec, req)
+	if rec.Code != http.StatusForbidden {
+		t.Fatalf("cross-site POST /refresh: status %d, want %d", rec.Code, http.StatusForbidden)
+	}
+}
+
 func get(t *testing.T, url string) string {
 	t.Helper()
 	resp, err := http.Get(url)

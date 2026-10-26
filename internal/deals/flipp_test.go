@@ -1,7 +1,6 @@
 package deals
 
 import (
-	"context"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -12,16 +11,19 @@ func TestFlippFetchFiltersStores(t *testing.T) {
 		if r.URL.Query().Get("postal_code") != "07052" {
 			t.Errorf("missing postal code: %s", r.URL.RawQuery)
 		}
-		w.Write([]byte(`{"items":[
+		_, err := w.Write([]byte(`{"items":[
 			{"flyer_item_id":1,"name":"Boneless Chicken Breast","merchant_name":"ShopRite","current_price":1.99,"post_price_text":"lb","valid_from":"2026-10-23T04:00:00+00:00","valid_to":"2026-10-30T03:59:59+00:00"},
 			{"flyer_item_id":2,"name":"Chicken Thighs","merchant_name":"Stop & Shop","current_price":2.49},
 			{"flyer_item_id":3,"name":"Kirkland Chicken","merchant_name":"Costco","current_price":"12.99","original_price":"15.99"}
 		]}`))
+		if err != nil {
+			t.Error(err)
+		}
 	}))
 	defer srv.Close()
 
 	f := &Flipp{BaseURL: srv.URL, PostalCode: "07052", Stores: []Store{ShopRite, Costco}}
-	got, err := f.Fetch(context.Background(), []string{"chicken", "chicken"})
+	got, err := f.Fetch(t.Context(), []string{"chicken", "chicken"})
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -54,7 +54,7 @@ func main() {
 			Delay:      300 * time.Millisecond,
 		})
 	}
-	for _, p := range strings.Split(*files, ",") {
+	for p := range strings.SplitSeq(*files, ",") {
 		if p = strings.TrimSpace(p); p != "" {
 			sources = append(sources, &deals.File{Path: p})
 		}
@@ -79,7 +79,9 @@ func main() {
 		<-ctx.Done()
 		shutdown, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 		defer cancel()
-		hs.Shutdown(shutdown)
+		if err := hs.Shutdown(shutdown); err != nil {
+			log.Warn("shutdown", "err", err)
+		}
 	}()
 	log.Info("listening", "addr", *addr, "sources", len(sources), "recipes", len(rs))
 	if err := hs.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {

@@ -4,6 +4,8 @@ package store
 
 import (
 	"encoding/json"
+	"errors"
+	"io/fs"
 	"os"
 	"path/filepath"
 	"sync"
@@ -32,7 +34,7 @@ type Store struct {
 func Open(path string) (*Store, error) {
 	s := &Store{path: path}
 	b, err := os.ReadFile(path)
-	if os.IsNotExist(err) {
+	if errors.Is(err, fs.ErrNotExist) {
 		return s, nil
 	}
 	if err != nil {
