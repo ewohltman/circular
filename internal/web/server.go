@@ -2,6 +2,7 @@
 package web
 
 import (
+	"cmp"
 	"context"
 	"embed"
 	"encoding/json"
@@ -10,7 +11,7 @@ import (
 	"io/fs"
 	"log/slog"
 	"net/http"
-	"sort"
+	"slices"
 	"strings"
 	"sync"
 	"time"
@@ -62,7 +63,9 @@ func (s *Server) Init() error {
 	return nil
 }
 
-// Handler returns the HTTP routes.
+// Handler returns the HTTP routes. Cross-origin browser requests to unsafe
+// methods are rejected, so another site can't make a visitor's browser POST
+// /refresh.
 func (s *Server) Handler() http.Handler {
 	mux := http.NewServeMux()
 	static, _ := fs.Sub(staticFS, "static")
@@ -70,7 +73,7 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /{$}", s.handleIndex)
 	mux.HandleFunc("GET /api/plan", s.handlePlanJSON)
 	mux.HandleFunc("POST /refresh", s.handleRefresh)
-	return mux
+	return http.NewCrossOriginProtection().Handler(mux)
 }
 
 // Refresh fetches deals from every source, rebuilds the plan, and saves it.
@@ -90,11 +93,11 @@ func (s *Server) Refresh(ctx context.Context) (*store.Snapshot, error) {
 		snap.Deals = append(snap.Deals, ds...)
 	}
 	snap.Deals = deals.Dedupe(snap.Deals)
-	sort.SliceStable(snap.Deals, func(i, j int) bool {
-		if snap.Deals[i].Store != snap.Deals[j].Store {
-			return snap.Deals[i].Store > snap.Deals[j].Store // ShopRite first
-		}
-		return snap.Deals[i].Savings() > snap.Deals[j].Savings()
+	slices.SortStableFunc(snap.Deals, func(a, b deals.Deal) int {
+		return cmp.Or(
+			cmp.Compare(b.Store, a.Store), // ShopRite first
+			cmp.Compare(b.Savings(), a.Savings()),
+		)
 	})
 	snap.Plan = planner.Build(s.Recipes, snap.Deals, planner.WeekStart(s.Now()), planner.Options{})
 	s.Log.Info("refreshed", "deals", len(snap.Deals), "meals", len(snap.Plan.Meals), "errors", len(snap.Errors))
@@ -146,7 +149,9 @@ func (s *Server) handlePlanJSON(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(snap)
+	if err := json.NewEncoder(w).Encode(snap); err != nil {
+		s.Log.Error("encode plan", "err", err)
+	}
 }
 
 func (s *Server) handleRefresh(w http.ResponseWriter, r *http.Request) {
