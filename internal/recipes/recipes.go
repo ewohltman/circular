@@ -3,7 +3,7 @@ package recipes
 
 import (
 	_ "embed"
-	"encoding/json"
+	"encoding/json/v2"
 	"fmt"
 	"maps"
 	"os"
@@ -18,7 +18,7 @@ type Ingredient struct {
 	Name    string   `json:"name"`
 	Match   []string `json:"match"`
 	Exclude []string `json:"exclude,omitempty"`
-	Main    bool     `json:"main,omitempty"` // the protein/centerpiece; weighted higher
+	Main    bool     `json:"main,omitzero"` // the protein/centerpiece; weighted higher
 }
 
 // Recipe is a dinner the planner can schedule.
@@ -74,14 +74,14 @@ func parse(b []byte, name string) ([]Recipe, error) {
 	return rs, nil
 }
 
-// SearchTerms returns the distinct first match term of every ingredient,
-// which is what we ask deal sources to search for.
+// SearchTerms returns every distinct match term in the catalog. Sources use
+// them to keep only the circular items some recipe could use.
 func SearchTerms(rs []Recipe) []string {
 	set := map[string]bool{}
 	for _, r := range rs {
 		for _, in := range r.Ingredients {
-			if len(in.Match) > 0 {
-				set[in.Match[0]] = true
+			for _, m := range in.Match {
+				set[m] = true
 			}
 		}
 	}

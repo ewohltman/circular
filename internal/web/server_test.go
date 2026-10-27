@@ -56,8 +56,16 @@ func TestRefreshAndRender(t *testing.T) {
 			t.Errorf("page missing %q", want)
 		}
 	}
-	if !strings.Contains(get(t, ts.URL+"/api/plan"), `"meals"`) {
+	plan := get(t, ts.URL+"/api/plan")
+	if !strings.Contains(plan, `"meals"`) {
 		t.Errorf("api/plan missing meals")
+	}
+	// The samples include AirPods (too pricey to be food) and apple hand soap
+	// (filed under Health & Beauty); both match the "apple" ingredient by name.
+	for _, nonFood := range []string{"AirPods", "Hand Soap"} {
+		if strings.Contains(body, nonFood) || strings.Contains(plan, nonFood) {
+			t.Errorf("%s kept as a food deal", nonFood)
+		}
 	}
 }
 

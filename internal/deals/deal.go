@@ -3,9 +3,20 @@ package deals
 
 import (
 	"context"
+	"math"
 	"strings"
 	"time"
+	_ "time/tzdata" // circular dates are Eastern time wherever the app runs
 )
+
+// eastern is the time zone both stores publish their dates in.
+var eastern = func() *time.Location {
+	loc, err := time.LoadLocation("America/New_York")
+	if err != nil {
+		panic(err) // unreachable with time/tzdata embedded
+	}
+	return loc
+}()
 
 // Store identifies a supported retailer.
 type Store string
@@ -20,22 +31,25 @@ type Deal struct {
 	ID           string    `json:"id"`
 	Store        Store     `json:"store"`
 	Name         string    `json:"name"`
-	Price        float64   `json:"price"`                   // sale price; 0 when unknown
-	RegularPrice float64   `json:"regular_price,omitempty"` // 0 when unknown
-	Unit         string    `json:"unit,omitempty"`          // e.g. "lb", "ea"
-	SaleStory    string    `json:"sale_story,omitempty"`    // e.g. "Save $2", "$4 OFF"
+	Price        float64   `json:"price"`                  // sale price per unit; 0 when unknown
+	RegularPrice float64   `json:"regular_price,omitzero"` // 0 when unknown
+	Discount     float64   `json:"discount,omitzero"`      // dollars off per unit when prices aren't both known, e.g. Costco's "Save $4.60"
+	Unit         string    `json:"unit,omitempty"`         // e.g. "lb", "ea"
+	SaleStory    string    `json:"sale_story,omitempty"`   // e.g. "2 for $7, save $5.56", "$4 OFF"
+	Category     string    `json:"category,omitempty"`     // e.g. "Food, Beverages & Tobacco > Food Items"
 	ImageURL     string    `json:"image_url,omitempty"`
 	ValidFrom    time.Time `json:"valid_from"`
 	ValidTo      time.Time `json:"valid_to"`
 	Source       string    `json:"source"`
 }
 
-// Savings returns the known dollar discount, or 0 when it can't be determined.
+// Savings returns the known dollar discount per unit, or 0 when it can't be
+// determined.
 func (d Deal) Savings() float64 {
 	if d.RegularPrice > d.Price && d.Price > 0 {
 		return d.RegularPrice - d.Price
 	}
-	return 0
+	return d.Discount
 }
 
 // Overlaps reports whether the deal is valid at any point in [from, to).
@@ -58,16 +72,17 @@ type Source interface {
 	Fetch(ctx context.Context, terms []string) ([]Deal, error)
 }
 
-// MatchStore maps a free-form merchant name to a supported store.
-func MatchStore(merchant string) (Store, bool) {
-	m := strings.ToLower(merchant)
-	switch {
-	case strings.Contains(m, "shoprite"):
-		return ShopRite, true
-	case strings.Contains(m, "costco"):
-		return Costco, true
+// Relevant reports whether name contains any of terms, ignoring case. It is
+// how sources that download a whole circular keep only what the recipes can
+// use; the planner applies each ingredient's exclusions afterwards.
+func Relevant(name string, terms []string) bool {
+	n := strings.ToLower(name)
+	for _, t := range terms {
+		if strings.Contains(n, t) {
+			return true
+		}
 	}
-	return "", false
+	return false
 }
 
 // Dedupe removes deals with duplicate IDs, keeping the first.
@@ -84,3 +99,6 @@ func Dedupe(in []Deal) []Deal {
 	}
 	return out
 }
+
+// cents rounds a dollar amount to the nearest cent.
+func cents(v float64) float64 { return math.Round(v*100) / 100 }

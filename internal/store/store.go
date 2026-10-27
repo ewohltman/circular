@@ -3,7 +3,8 @@
 package store
 
 import (
-	"encoding/json"
+	"encoding/json/jsontext"
+	"encoding/json/v2"
 	"errors"
 	"io/fs"
 	"os"
@@ -57,7 +58,8 @@ func (s *Store) Get() *Snapshot {
 
 // Put replaces the snapshot and writes it atomically.
 func (s *Store) Put(snap *Snapshot) error {
-	b, err := json.MarshalIndent(snap, "", "  ")
+	// v2 doesn't sort map keys unless asked; sorted keys keep the file diffable.
+	b, err := json.Marshal(snap, json.Deterministic(true), jsontext.WithIndent("  "))
 	if err != nil {
 		return err
 	}

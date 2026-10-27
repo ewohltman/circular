@@ -227,10 +227,9 @@ func seed(t time.Time) uint64 {
 	return h.Sum64()
 }
 
-// WeekStart returns midnight of the most recent Friday on or before t. ShopRite
-// circulars currently run Friday through Thursday.
+// WeekStart returns midnight of the most recent Sunday on or before t.
+// ShopRite's circular prices run Sunday through Saturday ("Week of 10/25").
 func WeekStart(t time.Time) time.Time {
 	t = time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, t.Location())
-	offset := (int(t.Weekday()) - int(time.Friday) + 7) % 7
-	return t.AddDate(0, 0, -offset)
+	return t.AddDate(0, 0, -int(t.Weekday()))
 }
