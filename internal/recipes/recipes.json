@@ -4,7 +4,7 @@
     "protein": "chicken", "minutes": 45, "servings": 4,
     "ingredients": [
       {"name": "chicken thighs", "match": ["chicken thigh"], "main": true},
-      {"name": "potatoes", "match": ["potato"], "exclude": ["chip", "sweet"]},
+      {"name": "potatoes", "match": ["potato"], "exclude": ["chip", "sweet", "crisps", "instant"]},
       {"name": "broccoli", "match": ["broccoli"]},
       {"name": "olive oil", "match": ["olive oil"]}
     ]
@@ -13,9 +13,9 @@
     "id": "chicken-stir-fry", "name": "Chicken and vegetable stir-fry with rice",
     "protein": "chicken", "minutes": 30, "servings": 4,
     "ingredients": [
-      {"name": "chicken breast", "match": ["chicken breast"], "exclude": ["breaded", "nugget"], "main": true},
-      {"name": "bell peppers", "match": ["pepper"], "exclude": ["black pepper", "pepperoni", "dr pepper", "dr. pepper"]},
-      {"name": "rice", "match": ["rice"], "exclude": ["krispies", "cake", "cereal"]},
+      {"name": "chicken breast", "match": ["chicken breast"], "exclude": ["breaded", "nugget", "black bear", "deli", "ham,"], "main": true},
+      {"name": "bell peppers", "match": ["pepper"], "exclude": ["black pepper", "pepperoni", "dr pepper", "dr. pepper", "peppermint", "pepperidge", "pepper jack", "jalape"]},
+      {"name": "rice", "match": ["rice"], "exclude": ["krispies", "cake", "cereal", "sides"]},
       {"name": "soy sauce", "match": ["soy sauce"]}
     ]
   },
@@ -24,7 +24,7 @@
     "protein": "beef", "minutes": 35, "servings": 6,
     "ingredients": [
       {"name": "ground beef", "match": ["ground beef", "ground chuck"], "main": true},
-      {"name": "pasta", "match": ["pasta", "spaghetti"], "exclude": ["sauce"]},
+      {"name": "pasta", "match": ["pasta", "spaghetti"], "exclude": ["sauce", "sides"]},
       {"name": "pasta sauce", "match": ["pasta sauce", "marinara"]},
       {"name": "parmesan", "match": ["parmesan"]}
     ]
@@ -35,7 +35,7 @@
     "ingredients": [
       {"name": "ground beef", "match": ["ground beef", "ground chuck"], "main": true},
       {"name": "taco shells or tortillas", "match": ["tortilla", "taco shell"], "exclude": ["chip"]},
-      {"name": "shredded cheese", "match": ["shredded cheese", "cheddar"]},
+      {"name": "shredded cheese", "match": ["shredded cheese", "cheddar"], "exclude": ["popcorn", "crackers"]},
       {"name": "lettuce", "match": ["lettuce"]},
       {"name": "salsa", "match": ["salsa"]}
     ]
@@ -44,9 +44,9 @@
     "id": "steak-night", "name": "Seared steak with roasted asparagus",
     "protein": "beef", "minutes": 30, "servings": 2,
     "ingredients": [
-      {"name": "steak", "match": ["steak", "ribeye", "sirloin", "strip"], "exclude": ["sauce", "seasoning", "salmon", "tuna"], "main": true},
+      {"name": "steak", "match": ["steak", "ribeye", "sirloin", "strip"], "exclude": ["sauce", "seasoning", "salmon", "tuna", "swordfish", "chicken", "steak-umm", "bacon"], "main": true},
       {"name": "asparagus", "match": ["asparagus"]},
-      {"name": "butter", "match": ["butter"], "exclude": ["peanut butter", "butternut"]}
+      {"name": "butter", "match": ["butter"], "exclude": ["peanut butter", "butternut", "buttery", "spread", "butterball", "butterworth", "butterfinger", "buttermilk"]}
     ]
   },
   {
@@ -54,7 +54,7 @@
     "protein": "pork", "minutes": 35, "servings": 4,
     "ingredients": [
       {"name": "pork chops", "match": ["pork chop"], "main": true},
-      {"name": "apples", "match": ["apple"], "exclude": ["juice", "sauce", "cider", "pie"]},
+      {"name": "apples", "match": ["apple"], "exclude": ["juice", "sauce", "cider", "pie", "caramel", "cinnamon", "sausage", "jacks", "snapple", "pineapple"]},
       {"name": "green beans", "match": ["green bean"]}
     ]
   },
@@ -62,10 +62,10 @@
     "id": "sausage-peppers", "name": "Italian sausage and peppers",
     "protein": "pork", "minutes": 30, "servings": 4,
     "ingredients": [
-      {"name": "Italian sausage", "match": ["italian sausage", "sausage"], "exclude": ["breakfast", "turkey"], "main": true},
-      {"name": "bell peppers", "match": ["pepper"], "exclude": ["black pepper", "pepperoni", "dr pepper", "dr. pepper"]},
+      {"name": "Italian sausage", "match": ["italian sausage", "sausage"], "exclude": ["breakfast", "turkey", "patties", "meatball"], "main": true},
+      {"name": "bell peppers", "match": ["pepper"], "exclude": ["black pepper", "pepperoni", "dr pepper", "dr. pepper", "peppermint", "pepperidge", "pepper jack", "jalape"]},
       {"name": "onions", "match": ["onion"], "exclude": ["ring", "soup"]},
-      {"name": "rolls", "match": ["rolls", "hoagie"], "exclude": ["egg roll", "toilet", "paper towel"]}
+      {"name": "rolls", "match": ["rolls", "hoagie"], "exclude": ["egg roll", "toilet", "paper towel", "pizza roll", "cinnamon roll", "crescent"]}
     ]
   },
   {
@@ -74,7 +74,7 @@
     "ingredients": [
       {"name": "salmon fillets", "match": ["salmon"], "exclude": ["canned", "smoked"], "main": true},
       {"name": "lemons", "match": ["lemon"], "exclude": ["lemonade", "juice"]},
-      {"name": "rice", "match": ["rice"], "exclude": ["krispies", "cake", "cereal"]},
+      {"name": "rice", "match": ["rice"], "exclude": ["krispies", "cake", "cereal", "sides"]},
       {"name": "spinach", "match": ["spinach"]}
     ]
   },
@@ -82,9 +82,9 @@
     "id": "shrimp-scampi", "name": "Shrimp scampi linguine",
     "protein": "fish", "minutes": 25, "servings": 4,
     "ingredients": [
-      {"name": "shrimp", "match": ["shrimp"], "exclude": ["ring", "cocktail sauce"], "main": true},
-      {"name": "linguine", "match": ["linguine", "pasta"], "exclude": ["sauce"]},
-      {"name": "butter", "match": ["butter"], "exclude": ["peanut butter", "butternut"]},
+      {"name": "shrimp", "match": ["shrimp"], "exclude": ["ring", "cocktail", "breaded", "appetizer", "tempura"], "main": true},
+      {"name": "linguine", "match": ["linguine", "pasta"], "exclude": ["sauce", "sides"]},
+      {"name": "butter", "match": ["butter"], "exclude": ["peanut butter", "butternut", "buttery", "spread", "butterball", "butterworth", "butterfinger", "buttermilk"]},
       {"name": "lemons", "match": ["lemon"], "exclude": ["lemonade", "juice"]}
     ]
   },
@@ -105,7 +105,7 @@
       {"name": "eggs", "match": ["eggs"], "exclude": ["egg roll", "eggplant"], "main": true},
       {"name": "spinach", "match": ["spinach"]},
       {"name": "mushrooms", "match": ["mushroom"], "exclude": ["soup"]},
-      {"name": "salad greens", "match": ["salad", "lettuce"], "exclude": ["dressing", "chicken salad", "tuna salad"]}
+      {"name": "salad greens", "match": ["salad", "lettuce"], "exclude": ["dressing", "chicken salad", "tuna salad", "crab salad", "of the sea", "dip"]}
     ]
   },
   {
@@ -114,7 +114,7 @@
     "ingredients": [
       {"name": "tortillas", "match": ["tortilla"], "exclude": ["chip"], "main": true},
       {"name": "black beans", "match": ["black bean", "beans"], "exclude": ["green bean", "coffee", "jelly"]},
-      {"name": "shredded cheese", "match": ["shredded cheese", "cheddar"]},
+      {"name": "shredded cheese", "match": ["shredded cheese", "cheddar"], "exclude": ["popcorn", "crackers"]},
       {"name": "avocados", "match": ["avocado"]}
     ]
   },
@@ -132,7 +132,7 @@
     "protein": "vegetarian", "minutes": 40, "servings": 4,
     "ingredients": [
       {"name": "pizza dough", "match": ["pizza dough", "pizza crust"], "main": true},
-      {"name": "mozzarella", "match": ["mozzarella"]},
+      {"name": "mozzarella", "match": ["mozzarella"], "exclude": ["sticks"]},
       {"name": "pasta sauce", "match": ["pizza sauce", "pasta sauce", "marinara"]},
       {"name": "pepperoni", "match": ["pepperoni"]}
     ]

@@ -8,12 +8,14 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"os/exec"
 	"os/signal"
 	"strings"
 	"syscall"
 	"time"
 
 	"github.com/ewohltman/circular/internal/deals"
+	"github.com/ewohltman/circular/internal/pricetag"
 	"github.com/ewohltman/circular/internal/recipes"
 	"github.com/ewohltman/circular/internal/store"
 	"github.com/ewohltman/circular/internal/web"
@@ -21,12 +23,14 @@ import (
 
 func main() {
 	var (
-		addr     = flag.String("addr", envOr("CIRCULAR_ADDR", ":8080"), "listen address")
-		zip      = flag.String("zip", envOr("CIRCULAR_ZIP", ""), "postal code used to find your local circulars")
-		dataPath = flag.String("data", envOr("CIRCULAR_DATA", "data/snapshot.json"), "where to cache deals and the plan")
-		recipeF  = flag.String("recipes", envOr("CIRCULAR_RECIPES", ""), "recipe catalog JSON (default: built-in)")
-		files    = flag.String("deals-file", envOr("CIRCULAR_DEALS_FILES", ""), "comma-separated JSON deal files, e.g. a Costco coupon book")
-		offline  = flag.Bool("offline", false, "skip Flipp and use only -deals-file (handy for demos)")
+		addr      = flag.String("addr", envOr("CIRCULAR_ADDR", ":8080"), "listen address")
+		zip       = flag.String("zip", envOr("CIRCULAR_ZIP", ""), "postal code; picks the ShopRite store there when -shoprite-store is unset")
+		storeNum  = flag.String("shoprite-store", envOr("CIRCULAR_SHOPRITE_STORE", ""), "ShopRite store number, e.g. 524 for North Brunswick")
+		tesseract = flag.String("tesseract", envOr("CIRCULAR_TESSERACT", "tesseract"), "Tesseract binary for reading ShopRite prices; \"\" skips prices")
+		dataPath  = flag.String("data", envOr("CIRCULAR_DATA", "data/snapshot.json"), "where to cache deals and the plan")
+		recipeF   = flag.String("recipes", envOr("CIRCULAR_RECIPES", ""), "recipe catalog JSON (default: built-in)")
+		files     = flag.String("deals-file", envOr("CIRCULAR_DEALS_FILES", ""), "comma-separated JSON deal files")
+		offline   = flag.Bool("offline", false, "skip costco.com and ShopRite's circular and use only -deals-file (handy for demos)")
 	)
 	flag.Parse()
 	log := slog.New(slog.NewTextHandler(os.Stderr, nil))
@@ -44,15 +48,19 @@ func main() {
 
 	var sources []deals.Source
 	if !*offline {
-		if *zip == "" {
-			log.Error("set -zip (or CIRCULAR_ZIP) to your postal code, or use -offline")
+		if *storeNum == "" && *zip == "" {
+			log.Error("set -shoprite-store or -zip (or CIRCULAR_SHOPRITE_STORE / CIRCULAR_ZIP), or use -offline")
 			os.Exit(2)
 		}
-		sources = append(sources, &deals.Flipp{
-			PostalCode: *zip,
-			Stores:     []deals.Store{deals.ShopRite, deals.Costco},
-			Delay:      300 * time.Millisecond,
-		})
+		sr := &deals.ShopRiteCircular{Store: *storeNum, PostalCode: *zip}
+		if *tesseract != "" {
+			if _, err := exec.LookPath(*tesseract); err != nil {
+				log.Warn("tesseract not found; ShopRite prices will be unknown", "err", err)
+			} else {
+				sr.Tags = &pricetag.Reader{Tesseract: *tesseract}
+			}
+		}
+		sources = append(sources, sr, &deals.CostcoCoupons{})
 	}
 	for p := range strings.SplitSeq(*files, ",") {
 		if p = strings.TrimSpace(p); p != "" {

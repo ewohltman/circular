@@ -5,7 +5,7 @@ import (
 	"cmp"
 	"context"
 	"embed"
-	"encoding/json"
+	"encoding/json/v2"
 	"fmt"
 	"html/template"
 	"io/fs"
@@ -92,7 +92,7 @@ func (s *Server) Refresh(ctx context.Context) (*store.Snapshot, error) {
 		}
 		snap.Deals = append(snap.Deals, ds...)
 	}
-	snap.Deals = deals.Dedupe(snap.Deals)
+	snap.Deals = deals.FoodOnly(deals.Dedupe(snap.Deals))
 	slices.SortStableFunc(snap.Deals, func(a, b deals.Deal) int {
 		return cmp.Or(
 			cmp.Compare(b.Store, a.Store), // ShopRite first
@@ -149,13 +149,14 @@ func (s *Server) handlePlanJSON(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
-	if err := json.NewEncoder(w).Encode(snap); err != nil {
+	if err := json.MarshalWrite(w, snap, json.Deterministic(true)); err != nil {
 		s.Log.Error("encode plan", "err", err)
 	}
 }
 
 func (s *Server) handleRefresh(w http.ResponseWriter, r *http.Request) {
-	ctx, cancel := context.WithTimeout(r.Context(), 2*time.Minute)
+	// The first refresh of a week reads ShopRite's price tags with OCR.
+	ctx, cancel := context.WithTimeout(r.Context(), 5*time.Minute)
 	defer cancel()
 	if _, err := s.Refresh(ctx); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

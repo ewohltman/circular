@@ -2,13 +2,14 @@ package deals
 
 import (
 	"context"
-	"encoding/json"
+	"encoding/json/v2"
 	"fmt"
 	"os"
 )
 
-// File loads deals from a JSON array on disk. It backs the Costco monthly
-// coupon book (entered by hand or from another scraper) and offline demos.
+// File loads deals from a JSON array on disk, for deals no source covers
+// (entered by hand or from another tool) and for offline demos. Keys are
+// matched case-sensitively, so use the lowercase names from Deal's tags.
 type File struct {
 	Path string
 }

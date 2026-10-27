@@ -78,7 +78,7 @@ func TestBuildPrefersDealsAndVariety(t *testing.T) {
 func TestWeekStart(t *testing.T) {
 	mon := time.Date(2026, 10, 26, 15, 0, 0, 0, time.UTC)
 	got := WeekStart(mon)
-	if got.Weekday() != time.Friday || got.Day() != 23 {
+	if got.Weekday() != time.Sunday || got.Day() != 25 {
 		t.Errorf("WeekStart(%v) = %v", mon, got)
 	}
 }

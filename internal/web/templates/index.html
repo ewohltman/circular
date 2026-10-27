@@ -48,7 +48,7 @@
           <ul class="ings">
             {{range .Matches}}
               {{if .Deal}}
-                <li class="on-sale {{storeClass .Deal.Store}}" title="{{.Deal.Name}}">{{.Ingredient.Name}} <b>{{money .Deal.Price}}{{with .Deal.Unit}}/{{.}}{{end}}</b> <em>{{.Deal.Store}}</em></li>
+                <li class="on-sale {{storeClass .Deal.Store}}" title="{{.Deal.Name}}">{{.Ingredient.Name}} <b>{{template "price" .Deal}}</b> <em>{{.Deal.Store}}</em></li>
               {{else}}
                 <li>{{.Ingredient.Name}}</li>
               {{end}}
@@ -73,7 +73,7 @@
             {{range $items}}
             <li>
               <label><input type="checkbox"> <span>{{.Deal.Name}}</span></label>
-              <span class="price">{{money .Deal.Price}}{{with .Deal.Unit}}/{{.}}{{end}}{{if .Deal.Savings}} <small>save {{money .Deal.Savings}}</small>{{end}}</span>
+              <span class="price">{{if .Deal.Price}}{{money .Deal.Price}}{{with .Deal.Unit}}/{{.}}{{end}}{{end}}{{if .Deal.Savings}} <small>save {{money .Deal.Savings}}</small>{{end}}</span>
             </li>
             {{end}}
           </ul>
@@ -101,7 +101,7 @@
           <tr>
             <td><span class="tag {{storeClass .Store}}">{{.Store}}</span></td>
             <td>{{.Name}}</td>
-            <td>{{money .Price}}{{with .Unit}}/{{.}}{{end}}</td>
+            <td>{{template "price" .}}</td>
             <td>{{.SaleStory}}</td>
             <td>{{if not .ValidTo.IsZero}}thru {{date .ValidTo}}{{end}}</td>
           </tr>
@@ -116,3 +116,4 @@
 </main>
 </body>
 </html>
+{{define "price"}}{{if .Price}}{{money .Price}}{{with .Unit}}/{{.}}{{end}}{{else if .Savings}}save {{money .Savings}}{{else}}on sale{{end}}{{end}}
